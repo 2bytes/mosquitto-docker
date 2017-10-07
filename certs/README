@@ -1,0 +1,4 @@
+Place certificates here
+ca.crt - CA Root certificate
+mqtt.crt - Server certificate with public address you'll access this server on
+mqtt.key - Private key for the above certificate

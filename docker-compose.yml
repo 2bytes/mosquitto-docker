@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  mqtt:
+    container_name: mqtt
+    build: .
+    image: 2bytes/mqtt:1.0
+    ports:
+    - "1883:1883"
+    - "2883:2883"
+    - "127.0.0.1:3883:3883"
+    volumes:
+    - /opt/mqtt:/var/lib/mosquitto
