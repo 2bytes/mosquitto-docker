@@ -4,7 +4,7 @@ services:
   mqtt:
     container_name: mqtt
     build: .
-    image: 2bytes/mqtt:1.0
+    image: 2bytes/mqtt:1.0.1
     ports:
     - "1883:1883"
     - "2883:2883"

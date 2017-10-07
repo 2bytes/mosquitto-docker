@@ -42,17 +42,15 @@ This port is useful for connecting from Home Assistant if it's on this machine b
 The container is configured to disallow anonymous access on all ports, but, this will be the case only after you add users. It seems that while the password file is empty, anyone can connect. It may choose to add a randomly generated user to it in the future to prevent people accidently leaving it open. In this case, you will not be able to connect until you add a user yourself.
 
 ## Adding users
-Once the container is configured correctly with certificates and it starts successfully, you can add users. Run the following command to add a user interactively, then restart the container!
-
-Don't change the path to the pwfile, it's hardcoded in the container, just use it as-is.
+Once the container is configured correctly with certificates and it starts successfully, you can add users. Run the following command to add a user interactively.
 
 ```
-docker exec -it mqtt mosquitto_passwd /var/lib/mosquitto/pwfile <username> 
+docker-compose exec mqtt adduser <username> 
 ```
 you will be prompted for a password, and then to repeat it.
 
-Now restart the container to pick up the new user.
+## Deleting users
 
 ```
-docker-compose restart
+docker-compose exec mqtt deluser <username>
 ```

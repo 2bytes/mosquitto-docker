@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y wget \
 ADD mosquitto.conf /mqtt/config/mosquitto.conf
 ADD conf.d /mqtt/config/conf.d
 ADD certs /mqtt/config/certs
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY scripts/* /usr/local/bin/
 
 VOLUME /var/lib/mosquitto/db
 

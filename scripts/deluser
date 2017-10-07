@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -euo pipefail
+
+mosquitto_passwd -D /var/lib/mosquitto/pwfile $1
+kill -HUP $(pidof mosquitto)
+exit $?
