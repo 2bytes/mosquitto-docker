@@ -1,7 +1,7 @@
 
 # Mosquitto MQTT broker Docker image
 
-This image places teh Mosquitto MQTT broker (https://mosquitto.org/) in a Docker container and pre-configures it for use in my Home Assistant setup. It may be useful to others, and may need changes to suit your needs.
+This image places the Mosquitto MQTT broker (https://mosquitto.org/) in a Docker container and pre-configures it for use in my Home Assistant setup. It may be useful to others, and may need changes to suit your needs.
 
 It is however quite generic and could be used for any purpose.
 
