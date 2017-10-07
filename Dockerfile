@@ -24,7 +24,7 @@ ADD conf.d /mqtt/config/conf.d
 ADD certs /mqtt/config/certs
 COPY scripts/* /usr/local/bin/
 
-VOLUME /var/lib/mosquitto/db
+VOLUME /var/lib/mosquitto/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
