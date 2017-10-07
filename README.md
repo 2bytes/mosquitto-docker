@@ -54,3 +54,66 @@ you will be prompted for a password, and then to repeat it.
 ```
 docker-compose exec mqtt deluser <username>
 ```
+
+## Configuring Home Assistant
+You can configure Home Assistant as a client for this broker, it will allow to gather published topics.
+
+If you also configure Home Assistant for Owntracks, Home Assistant will pick up location changes for Owntracks users through this broker.
+
+### configuration.yml
+
+An example configuration looks as follows, you tell Home Assistant where to look for the broker, this is the address of the machine this Docker container runs on and has bound the port to. 
+
+`client_id` helps the broker identify this "client" in it's logs etc. Most importantly, the username and password should be set to the ones you generated in the steps above.
+
+If you decide to use TLS for this connection, you can provide your CA for Home Assistant to make the connection. This is only needed if you're using self-signed certificates.
+
+```
+mqtt:
+  broker: <ip of the host machine where this is hosted>
+  port: 1883
+  client_id: home-assistant
+  keepalive: 60
+  username: homeassistant
+  password: <password created using instructions above>
+#  certificate: /home/homeassistant/.homeassistant/ca.crt (for example)
+```
+
+### Subscribing to topics
+
+I have a Homie MQTT sensor I built using an ESP8266 sitting in my server rack, this publishes the temperature inside the rack periodically to this broker.
+
+Home Assistant can be configured to "subscribe" that topic, and therefore access the temperature as a sensor.
+
+```
+sensor:
+  - platform: mqtt
+    state_topic: 'homie/<device-identifier>/temperature/temperature'
+    name: 'Rack'
+    unit_of_measurement: '°C'
+```
+
+When the temperature sensor publishes to the topic above, Home Assistant will be subscriber and receive and update of the temperature, this can then be displayed as any other sensor in Home Assistant.
+
+Another example, my PC publishes its presence so Home Assistant can control my desk lamp when the PC is on/off.
+
+```
+binary_sensor:
+  - platform: mqtt
+    state_topic: 'presence/office/desktop/online'
+    name: Desktop
+```
+
+The desktop uses startup/shutdown scripts to publish its presence using the `mosquitto_pub` tool in Linux;
+```
+mosquitto_pub -d -V mqttv311 -u desktopuser -P "<desktoppassword>" -h <broker ip address> -i cmdLinePub -t "presence/office/desktop/online" -m "ON"
+
+```
+And when it turns off:
+```
+mosquitto_pub -d -V mqttv311 -u desktopuser -P "<desktoppassword>" -h <broker ip address> -i cmdLinePub -t "presence/office/desktop/online" -m "OFF"
+```
+
+> NOTE Don't forget to register these users in moqsuitto
+
+> TIP: If you use the external address like Owntracks, you can use this same mechanism to control Home Assistant and/or alert it if your laptop is turned on/off even when you're away from home, e.g. when you're at work.
